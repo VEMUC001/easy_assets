@@ -1,0 +1,7 @@
+builders:
+  easy_assets:
+    import: "package:easy_assets/builder.dart"
+    builder_factories: ["easyAssetsBuilder"]
+    build_extensions: { "$lib$": ["generated/assets.dart"] }
+    auto_apply: dependents
+    build_to: source
