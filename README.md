@@ -30,7 +30,7 @@ Run `flutter pub get` to install the package.
 1. Run the asset generator:
 
    ```
-   flutter pub run easy_assets:easy_assets_generator
+   dart run easy_assets:easy_assets_generator
    ```
 
    This will scan your asset directories and generate an `assets.dart` file in `lib/generated/`.
@@ -69,6 +69,64 @@ flutter:
 You can customize the asset generation process by modifying the `easy_assets_generator.dart` file. See the [Customization](#customization) section for more details.
 
 ## Examples
+
+Here's an example from our example app:
+
+```dart 
+import 'package:flutter/material.dart';
+import 'package:easy_assets/easy_assets.dart';
+import 'generated/assets.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // Preload assets
+  await AssetLoader().preloadAssets([
+    Assets.imagesFlutterLogo,
+  ]);
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'EasyAssets Example',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        fontFamily: 'OpenSans',
+      ),
+      home: MyHomePage(),
+    );
+  }
+}
+
+class MyHomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('EasyAssets Example'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              AssetLoader().getAssetPath(Assets.imagesFlutterLogo),
+              width: 200,
+            ),
+            SizedBox(height: 20),
+            Text(
+              'This image was loaded using EasyAssets',
+              style: TextStyle(fontSize: 16),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
 
 ### Accessing Images
 

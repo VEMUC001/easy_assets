@@ -2,6 +2,8 @@ name: easy_assets
 description: "A Flutter package for easy asset management and loading"
 version: 0.0.1
 homepage: https://github.com/VEMUC001/easy_assets/tree/main
+repository: https://github.com/VEMUC001/easy_assets
+issue_tracker: https://github.com/VEMUC001/easy_assets/issues
 license: MIT
 
 environment:
