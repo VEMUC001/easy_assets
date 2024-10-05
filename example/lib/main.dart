@@ -6,7 +6,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Preload assets
   await AssetLoader().preloadAssets([
-    Assets.images_flutter_logo_png,
+    "",
   ]);
   runApp(MyApp());
 }
@@ -37,7 +37,7 @@ class MyHomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              AssetLoader().getAssetPath(Assets.images_flutter_logo_png),
+              "",
               width: 200,
             ),
             SizedBox(height: 20),
