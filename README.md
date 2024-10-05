@@ -18,7 +18,7 @@ Add EasyAssets to your `pubspec.yaml` file:
 
 ```yaml
 dev_dependencies:
-  easy_assets: ^1.0.0
+  easy_assets: ^0.0.1
 ```
 
 Run `flutter pub get` to install the package.
