@@ -15,33 +15,37 @@ void main(List<String> args) async {
   final pubspecContent = await pubspecFile.readAsString();
   final pubspec = loadYaml(pubspecContent);
 
-  final assetDirs = <String>[];
+  final assetPaths = <String>[];
 
   // Add asset directories from pubspec.yaml
   if (pubspec['flutter'] != null && pubspec['flutter']['assets'] != null) {
-    assetDirs.addAll((pubspec['flutter']['assets'] as List).cast<String>());
+    for (final asset in pubspec['flutter']['assets']) {
+      final assetPath = asset as String;
+      if (await FileSystemEntity.isDirectory(
+          path.join(projectDir, assetPath))) {
+        await _addAssetsFromDirectory(projectDir, assetPath, assetPaths);
+      } else {
+        assetPaths.add(assetPath);
+      }
+    }
   }
 
-  // Add font directories from pubspec.yaml
+  // Add font assets from pubspec.yaml
   if (pubspec['flutter'] != null && pubspec['flutter']['fonts'] != null) {
     for (final font in pubspec['flutter']['fonts']) {
-      if (font['asset'] != null) {
-        final fontPath = path.dirname(font['asset'] as String);
-        if (!assetDirs.contains(fontPath)) {
-          assetDirs.add(fontPath);
+      if (font['family'] != null && font['fonts'] != null) {
+        for (final fontFile in font['fonts']) {
+          if (fontFile['asset'] != null) {
+            assetPaths.add(fontFile['asset'] as String);
+          }
         }
       }
     }
   }
 
-  // If no asset directories are specified, use the default 'assets' directory
-  if (assetDirs.isEmpty) {
-    assetDirs.add('assets');
-  }
-
   final generator = AssetGenerator(
     projectRoot: projectDir,
-    assetDirs: assetDirs,
+    assetPaths: assetPaths,
     outputPath: 'lib/generated/assets.dart',
   );
 
@@ -55,5 +59,16 @@ void main(List<String> args) async {
   } catch (e) {
     print('Error generating assets: $e');
     exit(1);
+  }
+}
+
+Future<void> _addAssetsFromDirectory(
+    String projectRoot, String dirPath, List<String> assetPaths) async {
+  final dir = Directory(path.join(projectRoot, dirPath));
+  await for (final entity in dir.list(recursive: true)) {
+    if (entity is File) {
+      final relativePath = path.relative(entity.path, from: projectRoot);
+      assetPaths.add(relativePath);
+    }
   }
 }

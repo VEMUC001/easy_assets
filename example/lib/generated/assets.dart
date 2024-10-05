@@ -2,4 +2,5 @@
 class Assets {
   static const String imagesDash = 'assets/images/dash.png';
   static const String gifsFlutterMeetUpLogo = 'assets/gifs/flutter_meet_up_logo.png';
+  static const String fontsOpensansRegular = 'assets/fonts/OpenSans-Regular.ttf';
 }
